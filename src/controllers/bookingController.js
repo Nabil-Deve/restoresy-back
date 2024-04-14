@@ -20,7 +20,7 @@ const createBooking = async (req, res) => {
       booking.comment = req.body.comment;
       await booking.save();
 
-      console.log(booking);
+      console.log(booking.hour);
       res.json(booking);
     } else res.status(401).send("You can not book");
   } catch (error) {
@@ -47,7 +47,7 @@ const getBooking = async (req, res) => {
     const booking = await Booking.findById(req.params.bookingId).populate(
       "user resto",
       "-password"
-    ); // important : populate permet de faire un join (collage de 2 tables).
+    ); // important : populate permet de faire un joint.
     res.json(booking);
   } catch (error) {
     res.status(500).json(error.message);
@@ -105,7 +105,7 @@ const getRestoBookings = async (req, res) => {
 const refuseBooking = async (req, res) => {
   try {
     const restoId = req.resto._id; // On récupère l'id du resto
-    const bookingId = req.params.bookingId; // On récupère le bookingId dans les params
+    const bookingId = req.params.bookingId; // On récupère le bookingId dans les params :localhost3000
     await Booking.updateOne(
       // On cherche la résa avec l'id du resto et l'id du booking.
       { resto: restoId, _id: bookingId },

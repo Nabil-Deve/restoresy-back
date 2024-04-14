@@ -17,23 +17,29 @@ app.use(cors()); // Utilisation du middleware CORS pour gérer les requêtes HTT
 main().catch((err) => console.log(err)); // Appel de la fonction principale pour établir la connexion à la base de données MongoDB
 
 async function main() {
-  await mongoose.connect(process.env.DATABASE_URL); // Connexion à la base de données MongoDB à partir de l'URL définie dans les variables d'environnement
+  await mongoose.connect(
+    "mongodb+srv://Nabil:Fletch@cluster0.930izzf.mongodb.net/"
+  ); // Connexion à la base de données MongoDB à partir de l'URL définie dans les variables d'environnement
   console.log("[📡 DATABASE] - Connected");
 }
 
-app.use(express.json()); // Utilisation du middleware pour parser les données au format JSON
+app.use(express.json()); // Utilisation du middleware pour parser (convertir pour que le backend puisse les lire) les données au format JSON
 app.use(express.urlencoded({ extended: false })); // Utilisation du middleware pour parser les données d'un formulaire HTML
 
 app.use("/users", userRouter); // Utilisation du routeur pour les routes liées aux utilisateurs
 app.use("/restos", restoRouter); // Utilisation du routeur pour les routes liées aux restaurants
 app.use("/bookings", bookingRouter);
 app.use("/ratings", ratingRouter);
+app.use("/images", express.static("images"));
 
 app.get("/", (req, res) => {
   res.send("restoresy back"); // Réponse du serveur à la requête GET sur la route principale
 });
 
-app.listen(port, () => {
-  console.log(`restoresy Back running: http://localhost:${port}`); // Démarrage du serveur Express sur le port spécifié
-  //dans les variables d'environnement
-});
+//app.listen(port, () => {
+//console.log(`restoresy Back running: http://localhost:${port}`); // Démarrage du serveur Express sur le port spécifié
+//dans les variables d'environnement
+
+//});
+
+export default app;

@@ -24,8 +24,7 @@ const login = async (req, res) => {
         { email: resto.email, _id: resto._id },
         process.env.JWT_SECRET
       );
-
-      resto.password = null; // Avant d'envoyer le resto au fronted, on enlève le champ mot de passe. On masque ce champ (Le 23 février).
+      resto.password = null; // Avant d'envoyer le resto au fronted, on enlève le champ mot de passe. On masque ce champ.
       res.json({ token, resto });
     } else {
       res.status(401).json({ error: " Vos identifiants sont invalides" });

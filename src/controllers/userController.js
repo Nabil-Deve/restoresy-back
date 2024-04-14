@@ -95,6 +95,35 @@ const getRestoById = async (req, res) => {
   }
 };
 
+const searchRestos = async (req, res) => {
+  try {
+    const query = req.body.query;
+    const regex = new RegExp(query, "i");
+    let filters = {
+      $or: [{ name: regex }, { address: regex }, { cuisine: regex }],
+    };
+
+    // on recherche les restos avec les filtres précédents
+    const restos = await Resto.find(filters).select("-password");
+    res.json(restos);
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
+const uploadUserPhoto = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    user.photoURI = req.file.filename;
+    await user.save();
+
+    res.json({ photoURI: user.photoURI });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send(error.message);
+  }
+};
+
 export {
   createUser,
   login,
@@ -103,4 +132,6 @@ export {
   deleteUser,
   getAllRestos,
   getRestoById,
+  searchRestos,
+  uploadUserPhoto,
 }; // Exportation des fonctions createUser, login, updateUser, getUser et deleteUser pour les rendre accessibles depuis d'autres fichiers.

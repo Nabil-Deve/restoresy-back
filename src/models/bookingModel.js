@@ -6,7 +6,7 @@ const bookingSchema = new Schema({
   resto: { type: Schema.Types.ObjectId, ref: "Resto" },
   comment: String,
   date: Date,
-  hour: Date,
+  hour: String,
   numberGuests: Number,
   status: {
     type: String,
