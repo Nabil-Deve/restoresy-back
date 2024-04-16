@@ -1,6 +1,7 @@
 import Resto from "../models/restoModel";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import config from "../config";
 
 require("dotenv").config();
 
