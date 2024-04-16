@@ -31,7 +31,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions)); // This replaces the custom OPTIONS handler
 
-main().catch((err) => console.log(err)); // Appel de la fonction principale pour établir la connexion à la base de données MongoDB
+// main().catch((err) => console.log(err)); // Appel de la fonction principale pour établir la connexion à la base de données MongoDB
 
 //async function main() {
 //await mongoose.connect(
