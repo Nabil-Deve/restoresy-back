@@ -22,7 +22,7 @@ const login = async (req, res) => {
     if (resto && validate) {
       const token = jwt.sign(
         { email: resto.email, _id: resto._id },
-        process.env.JWT_SECRET
+        config.JWT_SECRET
       );
       resto.password = null; // Avant d'envoyer le resto au fronted, on enlève le champ mot de passe. On masque ce champ.
       res.json({ token, resto });

@@ -13,14 +13,23 @@ const port = process.env.PORT; // Récupération du port à partir des variables
 
 app.use(volleyball); // Utilisation du middleware Volleyball pour afficher les logs des requêtes HTTP
 //app.use(cors()); // Utilisation du middleware CORS pour gérer les requêtes HTTP entre différents domaines
+
 const corsOptions = {
-  origin: ["https://restoresy-front-alpha.vercel.app/"],
-  methods: ["POST", "GET", "PUT", "DELETE"],
-  credentials: true, // should be true
-  allowedHeaders: ["Content-Type", "Authorization"],
+  origin: "https://restoresy-front-alpha.vercel.app",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  credentials: true,
+  allowedHeaders: [
+    "Content-Type",
+    "Authorization",
+    "X-Requested-With",
+    "Origin",
+    "Accept",
+  ],
+  maxAge: 7200,
 };
 
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); // This replaces the custom OPTIONS handler
 
 main().catch((err) => console.log(err)); // Appel de la fonction principale pour établir la connexion à la base de données MongoDB
 

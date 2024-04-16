@@ -3,6 +3,7 @@ import "dotenv/config";
 import User from "../models/userModel";
 import Resto from "../models/restoModel";
 import Booking from "../models/bookingModel";
+import config from "../config";
 
 // Fonction qui permet de vérifier la validité du token de l'utilisateur qui est connecté à chaque fois que l'utilisateur
 // fait une action côté front-end et envoie une requête. On doit inlure dans cette requête le token de ce dernier.
@@ -19,7 +20,7 @@ const auth = async (req, res, next) => {
 
   // Vérifier la validité du token
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, config.JWT_SECRET);
     // Store decrypted user's datas to req
     // on cherche l'utilisateur qui a fait la requête dans la base de données
     const user = await User.findById(decoded._id);
@@ -47,7 +48,7 @@ const authResto = async (req, res, next) => {
 
   // Vérifier la validité du token
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const decoded = jwt.verify(token, config.JWT_SECRET);
     // Store decrypted user's datas to req
     // On cherche le restaurant qui a fait la requête dans la base de données.
     console.log("Decoded", decoded);

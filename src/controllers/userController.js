@@ -27,7 +27,7 @@ const login = async (req, res) => {
       const token = jwt.sign(
         // génère token contenant le mail et l'Id du user qu'on peut utiliser pour l'authentifier dans les autres requêtes
         { email: user.email, _id: user._id },
-        process.env.JWT_SECRET // Utilisation de la clé secrète JWT définie dans les variables d'environnement.
+        config.JWT_SECRET // Utilisation de la clé secrète JWT définie dans les variables d'environnement.
       );
       user.password = null; // Avant d'envoyer le user au fronted, on enlève le champ mot de passe. On masque ce champ (Le 23 février).
       res.json({ token, user }); // Envoi du token JWT dans la réponse JSON.
