@@ -33,15 +33,45 @@ app.options("*", cors(corsOptions)); // This replaces the custom OPTIONS handler
 
 main().catch((err) => console.log(err)); // Appel de la fonction principale pour établir la connexion à la base de données MongoDB
 
-async function main() {
-  await mongoose.connect(
-    "mongodb+srv://Nabil:Fletch@cluster0.930izzf.mongodb.net/"
-  ); // Connexion à la base de données MongoDB à partir de l'URL définie dans les variables d'environnement
-  console.log("[📡 DATABASE] - Connected");
+//async function main() {
+//await mongoose.connect(
+//"mongodb+srv://Nabil:Fletch@cluster0.930izzf.mongodb.net/"
+//); // Connexion à la base de données MongoDB à partir de l'URL définie dans les variables d'environnement
+//console.log("[📡 DATABASE] - Connected");
+//}
+
+// Fonction qui remplace la précédente qui permet de connecter directement
+let cachedDbConnection = null;
+async function connectToDatabase() {
+  if (cachedDbConnection) {
+    console.log("Using cached database instance.");
+    return Promise.resolve(cachedDbConnection);
+  }
+  const db = await mongoose.connect(
+    "mongodb+srv://Nabil:Fletch@cluster0.930izzf.mongodb.net/",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    }
+  );
+  cachedDbConnection = db;
+  return db;
 }
 
 app.use(express.json()); // Utilisation du middleware pour parser (convertir pour que le backend puisse les lire) les données au format JSON
 app.use(express.urlencoded({ extended: false })); // Utilisation du middleware pour parser les données d'un formulaire HTML
+
+// On appelle la fonction connect à MongoDB et l'utiliser
+// Middleware to ensure database connection
+app.use(async (req, res, next) => {
+  try {
+    await connectToDatabase();
+    next();
+  } catch (error) {
+    console.error("Database connection error:", error);
+    res.status(500).json({ error: "Database connection failed" });
+  }
+});
 
 app.use("/users", userRouter); // Utilisation du routeur pour les routes liées aux utilisateurs
 app.use("/restos", restoRouter); // Utilisation du routeur pour les routes liées aux restaurants
