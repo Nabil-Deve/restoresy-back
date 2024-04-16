@@ -2,15 +2,45 @@ import Resto from "../models/restoModel";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import config from "../config";
+import { v2 as cloudinary } from "cloudinary";
 
 require("dotenv").config();
 
+cloudinary.config({
+  cloud_name: "dtbpbn8w4",
+  api_key: "742712573541959",
+  api_secret: "NAhUxYWeIpbfXCTNztIUFhueCzg",
+});
+
+// const createResto = async (req, res) => {
+//   try {
+//     let newResto = await Resto.create(req.body);
+//     res.json({ message: "Resto created", newResto });
+//   } catch (error) {
+//     res.status(500).json(error.message);
+//   }
+// };
 const createResto = async (req, res) => {
   try {
-    let newResto = await Resto.create(req.body);
+    const { email, image, ...restoData } = req.body;
+
+    // Vérifier si un restaurant avec le même email existe déjà
+    const existingResto = await Resto.findOne({ email: email });
+    if (existingResto) {
+      return res.status(409).json({ message: "Utilisateur déjà inscrit" });
+    }
+
+    if (image) {
+      const result = await cloudinary.uploader.upload(image, {
+        folder: "resto_images",
+      });
+      restoData.imageURI = result.url;
+    }
+
+    const newResto = await Resto.create({ email, ...restoData });
     res.json({ message: "Resto created", newResto });
   } catch (error) {
-    res.status(500).json(error.message);
+    res.status(500).json({ message: error.message });
   }
 };
 
