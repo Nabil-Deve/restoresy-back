@@ -2,6 +2,7 @@ import User from "../models/userModel";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import Resto from "../models/restoModel";
+import config from "../config";
 
 require("dotenv").config();
 
