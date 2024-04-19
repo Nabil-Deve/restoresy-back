@@ -112,19 +112,6 @@ const searchRestos = async (req, res) => {
   }
 };
 
-const uploadUserPhoto = async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id);
-    user.photoURI = req.file.filename;
-    await user.save();
-
-    res.json({ photoURI: user.photoURI });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send(error.message);
-  }
-};
-
 export {
   createUser,
   login,
@@ -134,5 +121,4 @@ export {
   getAllRestos,
   getRestoById,
   searchRestos,
-  uploadUserPhoto,
 }; // Exportation des fonctions createUser, login, updateUser, getUser et deleteUser pour les rendre accessibles depuis d'autres fichiers.

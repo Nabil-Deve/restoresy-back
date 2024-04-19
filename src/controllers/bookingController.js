@@ -14,7 +14,7 @@ const createBooking = async (req, res) => {
       const booking = new Booking(); // Crée une nouvelle instance de réservation avec les données fournies dans le corps de la requête
       booking.user = req.user._id;
       booking.resto = resto._id;
-      booking.hour = new Date(req.body.hour);
+      booking.hour = req.body.hour;
       booking.numberGuests = req.body.numberGuests;
       booking.date = new Date(req.body.date);
       booking.comment = req.body.comment;
