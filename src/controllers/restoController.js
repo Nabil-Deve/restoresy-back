@@ -80,7 +80,7 @@ const updateResto = async (req, res) => {
   try {
     console.log("CALLLLLLLLLLLLLED");
     const resto = await Resto.updateOne({ _id: req.resto._id }, req.body);
-    res.status(200).send("Resto has been updated");
+    res.status(200).send("Restaurant has been updated");
   } catch (error) {
     res.status(500).send(error.message);
   }
@@ -90,7 +90,7 @@ const updateResto = async (req, res) => {
 const deleteResto = async (req, res) => {
   try {
     const resto = await Resto.deleteOne({ _id: req.resto._id });
-    res.status(200).send("Resto has been deleted");
+    res.status(200).send("Restaurant has been deleted");
   } catch (error) {
     res.status(500).send(error.message);
   }
